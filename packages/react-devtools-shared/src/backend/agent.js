@@ -8,7 +8,7 @@
  */
 
 import EventEmitter from '../events';
-import throttle from 'lodash.throttle';
+import { throttle } from 'throttle-debounce';
 import {
   SESSION_STORAGE_LAST_SELECTION_KEY,
   SESSION_STORAGE_RELOAD_AND_PROFILE_KEY,
@@ -26,6 +26,7 @@ import {
   toggleEnabled as setTraceUpdatesEnabled,
 } from './views/TraceUpdates';
 import {patch as patchConsole, unpatch as unpatchConsole} from './console';
+import global from '../global';
 
 import type {BackendBridge} from 'react-devtools-shared/src/bridge';
 import type {
@@ -398,7 +399,7 @@ export default class Agent extends EventEmitter<{|
   };
 
   syncSelectionFromNativeElementsPanel = () => {
-    const target = window.__REACT_DEVTOOLS_GLOBAL_HOOK__.$0;
+    const target = global.__REACT_DEVTOOLS_GLOBAL_HOOK__.$0;
     if (target == null) {
       return;
     }
@@ -554,7 +555,7 @@ export default class Agent extends EventEmitter<{|
     this._bridge.send('unsupportedRendererVersion', rendererID);
   }
 
-  _throttledPersistSelection = throttle((rendererID: number, id: number) => {
+  _throttledPersistSelection = throttle(1000, (rendererID: number, id: number) => {
     // This is throttled, so both renderer and selected ID
     // might not be available by the time we read them.
     // This is why we need the defensive checks here.
@@ -568,5 +569,5 @@ export default class Agent extends EventEmitter<{|
     } else {
       sessionStorageRemoveItem(SESSION_STORAGE_LAST_SELECTION_KEY);
     }
-  }, 1000);
+  });
 }

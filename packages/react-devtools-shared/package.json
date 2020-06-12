@@ -12,7 +12,7 @@
     "@reach/tooltip": "^0.2.2",
     "clipboard-js": "^0.3.6",
     "local-storage-fallback": "^4.1.1",
-    "lodash.throttle": "^4.1.1",
+    "throttle-debounce": "^2.1.0",
     "memoize-one": "^3.1.1",
     "react-virtualized-auto-sizer": "^1.0.2",
     "semver": "^6.3.0"

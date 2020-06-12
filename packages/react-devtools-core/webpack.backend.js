@@ -19,7 +19,7 @@ const DEVTOOLS_VERSION = getVersionString();
 
 module.exports = {
   mode: __DEV__ ? 'development' : 'production',
-  devtool: __DEV__ ? 'cheap-module-eval-source-map' : false,
+  devtool: false,
   entry: {
     backend: './src/backend.js',
   },
@@ -28,8 +28,8 @@ module.exports = {
     filename: '[name].js',
 
     // This name is important; standalone references it in order to connect.
-    library: 'ReactDevToolsBackend',
-    libraryTarget: 'umd',
+    libraryTarget: 'global',
+    globalObject: '__webpack_exports__',
   },
   resolve: {
     alias: {

@@ -467,9 +467,9 @@ export function attach(
     // because it is stored in localStorage within the context of the extension.
     // It relies on the extension to pass the preference through via the global.
     const appendComponentStack =
-      window.__REACT_DEVTOOLS_APPEND_COMPONENT_STACK__ !== false;
+      global.__REACT_DEVTOOLS_APPEND_COMPONENT_STACK__ !== false;
     const breakOnConsoleErrors =
-      window.__REACT_DEVTOOLS_BREAK_ON_CONSOLE_ERRORS__ === true;
+      global.__REACT_DEVTOOLS_BREAK_ON_CONSOLE_ERRORS__ === true;
     if (appendComponentStack || breakOnConsoleErrors) {
       patchConsole({
         appendComponentStack,
@@ -549,8 +549,8 @@ export function attach(
   // The renderer interface can't read saved component filters directly,
   // because they are stored in localStorage within the context of the extension.
   // Instead it relies on the extension to pass filters through.
-  if (window.__REACT_DEVTOOLS_COMPONENT_FILTERS__ != null) {
-    applyComponentFilters(window.__REACT_DEVTOOLS_COMPONENT_FILTERS__);
+  if (global.__REACT_DEVTOOLS_COMPONENT_FILTERS__ != null) {
+    applyComponentFilters(global.__REACT_DEVTOOLS_COMPONENT_FILTERS__);
   } else {
     // Unfortunately this feature is not expected to work for React Native for now.
     // It would be annoying for us to spam YellowBox warnings with unactionable stuff,

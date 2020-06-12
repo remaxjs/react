@@ -7,7 +7,7 @@
  * @flow
  */
 
-import throttle from 'lodash.throttle';
+import { throttle } from 'throttle-debounce';
 import {
   useCallback,
   useEffect,
@@ -123,8 +123,8 @@ export function useIsOverflowing(
     const container = ((containerRef.current: any): HTMLDivElement);
 
     const handleResize = throttle(
-      () => setIsOverflowing(container.clientWidth <= totalChildWidth),
       100,
+      () => setIsOverflowing(container.clientWidth <= totalChildWidth),
     );
 
     handleResize();

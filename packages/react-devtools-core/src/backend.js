@@ -14,6 +14,7 @@ import {initBackend} from 'react-devtools-shared/src/backend';
 import {__DEBUG__} from 'react-devtools-shared/src/constants';
 import setupNativeStyleEditor from 'react-devtools-shared/src/backend/NativeStyleEditor/setupNativeStyleEditor';
 import {getDefaultComponentFilters} from 'react-devtools-shared/src/utils';
+import global from 'react-devtools-shared/src/global';
 
 import type {BackendBridge} from 'react-devtools-shared/src/bridge';
 import type {ComponentFilter} from 'react-devtools-shared/src/types';
@@ -31,9 +32,11 @@ type ConnectOptions = {
   ...
 };
 
-installHook(window);
+// eslint-disable-next-line no-undef
+installHook(global);
 
-const hook: ?DevToolsHook = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+// eslint-disable-next-line no-undef
+const hook: ?DevToolsHook = global.__REACT_DEVTOOLS_GLOBAL_HOOK__;
 
 let savedComponentFilters: Array<ComponentFilter> = getDefaultComponentFilters();
 
@@ -88,7 +91,7 @@ export function connectToDevTools(options: ?ConnectOptions) {
   // If existing websocket is passed, use it.
   // This is necessary to support our custom integrations.
   // See D6251744.
-  const ws = websocket ? websocket : new window.WebSocket(uri);
+  const ws = websocket ? websocket : new global.WebSocket(uri);
   ws.onclose = handleClose;
   ws.onerror = handleFailed;
   ws.onmessage = handleMessage;
@@ -159,7 +162,7 @@ export function connectToDevTools(options: ?ConnectOptions) {
     // This injection strategy doesn't work for React Native though.
     // Ideally the backend would save the filters itself, but RN doesn't provide a sync storage solution.
     // So for now we just fall back to using the default filters...
-    if (window.__REACT_DEVTOOLS_COMPONENT_FILTERS__ == null) {
+    if (global.__REACT_DEVTOOLS_COMPONENT_FILTERS__ == null) {
       bridge.send('overrideComponentFilters', savedComponentFilters);
     }
 
@@ -171,7 +174,7 @@ export function connectToDevTools(options: ?ConnectOptions) {
       hook.emit('shutdown');
     });
 
-    initBackend(hook, agent, window);
+    initBackend(hook, agent, global);
 
     // Setup React Native style editor if the environment supports it.
     if (resolveRNStyle != null || hook.resolveRNStyle != null) {

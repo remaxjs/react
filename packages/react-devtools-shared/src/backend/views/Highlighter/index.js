@@ -8,9 +8,10 @@
  */
 
 import memoize from 'memoize-one';
-import throttle from 'lodash.throttle';
+import { throttle } from 'throttle-debounce';
 import Agent from 'react-devtools-shared/src/backend/agent';
 import {hideOverlay, showOverlay} from './Highlighter';
+import global from '../../../global';
 
 import type {BackendBridge} from 'react-devtools-shared/src/bridge';
 
@@ -121,7 +122,7 @@ export default function setupHighlighter(
       showOverlay(nodes, displayName, hideAfterTimeout);
 
       if (openNativeElementsPanel) {
-        window.__REACT_DEVTOOLS_GLOBAL_HOOK__.$0 = node;
+        global.__REACT_DEVTOOLS_GLOBAL_HOOK__.$0 = node;
         bridge.send('syncSelectionToNativeElementsPanel');
       }
     } else {
@@ -182,15 +183,15 @@ export default function setupHighlighter(
   }
 
   const selectFiberForNode = throttle(
+    200,
     memoize((node: HTMLElement) => {
       const id = agent.getIDForNode(node);
       if (id !== null) {
         bridge.send('selectFiber', id);
       }
     }),
-    200,
     // Don't change the selection in the very first 200ms
     // because those are usually unintentional as you lift the cursor.
-    {leading: false},
+    {atBegin: false},
   );
 }

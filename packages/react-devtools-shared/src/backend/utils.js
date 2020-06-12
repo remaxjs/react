@@ -9,6 +9,7 @@
 
 import {copy} from 'clipboard-js';
 import {dehydrate} from '../hydration';
+import global from '../global';
 
 import type {DehydratedData} from 'react-devtools-shared/src/devtools/views/Components/types';
 
@@ -41,7 +42,7 @@ export function cleanForBridge(
 export function copyToClipboard(value: any): void {
   const safeToCopy = serializeToString(value);
   const text = safeToCopy === undefined ? 'undefined' : safeToCopy;
-  const {clipboardCopyText} = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+  const {clipboardCopyText} = global.__REACT_DEVTOOLS_GLOBAL_HOOK__;
 
   // On Firefox navigator.clipboard.writeText has to be called from
   // the content script js code (because it requires the clipboardWrite

@@ -1,5 +1,5 @@
 {
-  "name": "react-devtools-core",
+  "name": "@remax/react-devtools-core",
   "version": "4.8.2",
   "description": "Use react-devtools outside of the browser",
   "license": "MIT",
@@ -29,5 +29,8 @@
   },
   "devDependencies": {
     "cross-env": "^3.1.4"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
